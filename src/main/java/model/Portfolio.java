@@ -1,47 +1,60 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Portfolio {
-    private List<Asset> assets;
+    private Map<String, Asset> assets;
+    double totalValue;
 
     public Portfolio() {
-        assets = new ArrayList<>();
+        assets = new HashMap<String, Asset>();
+        totalValue = 0;
     }
 
     public void addAsset(Asset asset) {
-        assets.add(asset);
+        assets.put(asset.getName(), asset);
     }
 
-    public void removeAsset(Asset asset) {
-        assets.remove(asset);
-    }
-
-    public List<Asset> getAssets() {
-        return assets;
+    public void removeAsset(String assetName) {
+        assets.remove(assetName);
     }
 
     public double getTotalValue() {
-        return assets.stream().mapToDouble(Asset::getValue).sum();
+        return totalValue;
     }
 
     public void applyTransaction(Transaction tx) {
         Asset asset = tx.getAsset();
+
         if (tx.getType() == Transaction.Type.BUY) {
             asset.setValue(asset.getValue() + tx.getAmount());
-            if (!assets.contains(asset)) assets.add(asset);
+            totalValue += tx.getAmount();
+
+            if (!assets.containsKey(asset.getName())) {
+                assets.put(asset.getName(), asset);
+            }
+
         } else if (tx.getType() == Transaction.Type.SELL) {
-            double newValue = asset.getValue() - tx.getAmount();
-            asset.setValue(Math.max(newValue, 0));
-            if (asset.getValue() == 0) assets.remove(asset);
+            double oldValue = asset.getValue();
+
+            double newValue = Math.max(oldValue - tx.getAmount(), 0);
+            asset.setValue(newValue);
+
+            double removed = oldValue - newValue;
+            totalValue -= removed;
+
+            if (asset.getValue() == 0) {
+                assets.remove(asset.getName());
+            }
         }
     }
+
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Portfolio:\n");
-        for (Asset a : assets) {
+        for (Asset a : assets.values()) {
             sb.append(a.toString()).append("\n");
         }
         sb.append("Total Value: ").append(getTotalValue());
