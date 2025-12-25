@@ -6,7 +6,7 @@ import service.RiskCalculator;
 public class Main {
     public static void main(String[] args) {
         // Create assets
-        Asset stock = new Asset("Stock A", 10000, 0.2);
+        Asset stock = new Asset("Stock A", -100, 0.2);
         Asset bond = new Asset("Bond B", 5000, 0.05);
         Asset crypto = new Asset("Crypto C", 2000, 0.8);
 
