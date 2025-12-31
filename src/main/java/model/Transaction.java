@@ -1,11 +1,11 @@
 package model;
 
-public class Transaction {
+public final class Transaction {
     public enum Type { BUY, SELL }
 
-    private Type type;
-    private String assetname;
-    private double amount; // value of transaction
+    private final Type type;
+    private final String assetname;
+    private final double amount; // value of transaction
 
    public Transaction(Type type, String assetname, double amount) {
         if (type == null) {
