@@ -7,18 +7,21 @@ import java.util.Set;
 
 
 public class Portfolio {
+
     private Map<String, Asset> assets;
-    double totalValue;
+    private double totalValue;
     private final Set<Integer> appliedTransactionIds;
 
 
-   public Portfolio(Map<String, Asset> assets) {
+    public Portfolio(Map<String, Asset> assets) {
         this.assets = assets;
         this.appliedTransactionIds = new HashSet<>();
         this.totalValue = 0;
+
+        for (Asset asset : assets.values()) {
+            this.totalValue += asset.getValue();
+        }
     }
-
-
 
     public boolean hasAsset(String name){
         return assets.containsKey(name);
@@ -32,11 +35,14 @@ public class Portfolio {
     }
     public void addAsset(Asset asset) {
         assets.put(asset.getName(), asset);
+        totalValue += asset.getValue();
     }
 
     public void removeAsset(String assetName) {
+        totalValue -= assets.get(assetName).getValue();
         assets.remove(assetName);
     }
+
 
     public double getTotalValue() {
         return totalValue;
