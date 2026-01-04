@@ -96,4 +96,5 @@ public class Portfolio {
         sb.append("Total Value: ").append(getTotalValue());
         return sb.toString();
     }
+
 }
