@@ -75,6 +75,7 @@ portfolio.applyTransaction(buy);
 portfolio.applyTransaction(sell);
 
 double totalValue = portfolio.getTotalValue();
+``` 
 
 ---
 
